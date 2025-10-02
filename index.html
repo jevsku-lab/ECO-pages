@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Береги Природу: Вместе Мы Можем Больше!</title>
+    <title>Проект - Береги Природу. Вместе Мы Можем Больше!</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -130,7 +130,7 @@
         .hero {
             height: 100vh;
             /* Изображение природы, моря, гор, животных */
-            background: url('https://images.unsplash.com/photo-1470071459032-6072122384d6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
+            background: url('главная.png') no-repeat center center/cover;
             color: #fff;
             display: flex;
             flex-direction: column;
@@ -156,18 +156,52 @@
             z-index: 1;
             max-width: 900px;
         }
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 28px;
+            border-radius: 999px;
+            background: rgba(15, 33, 44, 0.4);
+            border: 1px solid rgba(255,255,255,0.45);
+            color: #f8fcff;
+            font-size: 1.15rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 18px 32px rgba(8, 19, 29, 0.35);
+        }
+
+        .hero-label::before {
+            content: '';
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6de7ae 0%, #45a7ff 100%);
+            box-shadow: 0 0 0 6px rgba(109, 231, 174, 0.25);
+        }
+
 
         .hero h1 {
             font-size: 4.8rem;
             margin-bottom: 20px;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            line-height: 1.12;
             letter-spacing: 1px;
+            color: #f6fbff;
+            background: linear-gradient(115deg, rgba(255,255,255,0.98) 0%, rgba(155,231,196,0.98) 50%, rgba(97,181,255,0.98) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 20px 35px rgba(0,0,0,0.45);
         }
 
         .hero p {
             font-size: 1.6rem;
             margin-bottom: 40px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            color: #f1f6fd;
+            text-shadow: 0 8px 16px rgba(0,0,0,0.55);
         }
 
         .btn {
@@ -197,6 +231,14 @@
 
         .btn-secondary:hover {
             background-color: #0056b3; /* Темнее синий */
+        }
+
+        .btn-accent {
+            background: var(--accent-color);
+        }
+
+        .btn-accent:hover {
+            background-color: #117a8b;
         }
 
         /* About Section */
@@ -230,49 +272,99 @@
         }
 
         .action-item {
-            background: #fff;
-            padding: 40px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            border: 1px solid rgba(0,0,0,0.05);
+            background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(240,250,246,0.95) 100%);
+            padding: 32px 32px 36px;
+            border-radius: 22px;
+            text-align: left;
+            box-shadow: 0 20px 38px rgba(24,59,40,0.16);
+            transition: transform 0.45s ease, box-shadow 0.45s ease;
+            border: 1px solid rgba(40,167,69,0.12);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .action-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(135deg, rgba(40,167,69,0.08), rgba(0,123,255,0.05));
+            opacity: 0;
+            transition: opacity 0.45s ease;
         }
 
         .action-item:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+            transform: translateY(-18px);
+            box-shadow: 0 32px 55px rgba(24,59,40,0.22);
         }
 
-        .action-item img {
-            width: 140px;
-            height: 140px;
-            object-fit: contain;
-            margin-bottom: 25px;
-            /* Используем реальные изображения-иконки или более подходящие */
-            border-radius: 50%; /* Сделать иконки круглыми */
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+        .action-item:hover::after {
+            opacity: 1;
         }
-        .action-item:hover img {
-            transform: scale(1.05);
+
+        .action-thumb {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            border-radius: 18px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 14px 30px rgba(19,49,38,0.2);
+        }
+
+        .action-thumb::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.25) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .action-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.03);
+            transition: transform 0.45s ease;
+        }
+
+        .action-item:hover .action-thumb img {
+            transform: scale(1.08);
+        }
+
+        .action-item:hover .action-thumb::before {
+            opacity: 1;
+        }
+
+        .action-body {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .action-item h3 {
-            font-size: 2rem;
-            color: var(--primary-color);
-            margin-bottom: 20px;
+            font-size: 1.9rem;
+            color: var(--dark-color);
+            margin: 0;
         }
 
         .action-item p {
-            font-size: 1.15rem;
-            margin-bottom: 30px;
+            font-size: 1.05rem;
             color: var(--text-color);
+            margin: 0;
+            line-height: 1.7;
         }
 
         .action-item .btn {
-            padding: 12px 25px;
+            padding: 12px 28px;
             font-size: 1.05rem;
+            align-self: flex-start;
+            margin-left: 0;
+            margin-top: auto;
+            box-shadow: 0 16px 30px rgba(0,123,255,0.22);
         }
 
         /* Contact Section */
@@ -422,8 +514,9 @@
     <!-- Hero Section -->
     <section id="hero" class="hero">
         <div class="content">
-            <h1>Береги Природу: Вместе Мы Можем Больше!</h1>
-            <p>Наша планета — наш дом. Давайте вместе строить зеленое и устойчивое будущее для всех.</p>
+            <span class="hero-label">Проект «Береги природу»</span>
+            <h1>Вместе мы можем больше!</h1>
+            <p>Наша планета — наш дом. Давайте вместе строить зелёное и устойчивое будущее для всех.</p>
             <a href="#actions" class="btn">Присоединиться к нам</a>
             <a href="#about" class="btn btn-secondary">Узнать больше</a>
         </div>
@@ -444,25 +537,37 @@
     <!-- Actions Section -->
     <section id="actions">
         <div class="container">
-            <h2>Как вы можете помочь</h2>
+            <h2>Что вы можете сделать</h2>
             <div class="action-grid">
                 <div class="action-item">
-                    <img src="https://images.unsplash.com/photo-1542601905-c3359d95f87b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="Волонтерский проект">
-                    <h3>Стать волонтером</h3>
-                    <p>Присоединяйтесь к нашим волонтерским проектам по очистке пляжей, посадке деревьев и многим другим инициативам. Ваши руки могут изменить мир!</p>
-                    <a href="#" class="btn" onclick="alert('Спасибо за интерес! Скоро мы опубликуем новые проекты.')">Участвовать</a>
+                    <div class="action-thumb">
+                        <img src="волонтер.png" alt="Стать волонтёром">
+                    </div>
+                    <div class="action-body">
+                        <h3>Стать волонтёром</h3>
+                        <p>Вместе мы высаживаем деревья, очищаем леса и берега от мусора и проводим вдохновляющие эко-мероприятия для жителей города.</p>
+                    </div>
+                    <a href="#" class="btn" onclick="alert('Спасибо за желание помочь! Мы скоро свяжемся с вами.')">Присоединиться</a>
                 </div>
                 <div class="action-item">
-                    <img src="https://images.unsplash.com/photo-1532629390-e99c15ad1f6a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="Пожертвование">
-                    <h3>Сделать пожертвование</h3>
-                    <p>Ваша финансовая поддержка помогает нам реализовывать масштабные экологические проекты и защищать уязвимые экосистемы.</p>
-                    <a href="#" class="btn" onclick="alert('Спасибо за вашу щедрость! Мы очень ценим вашу поддержку.')">Пожертвовать</a>
+                    <div class="action-thumb">
+                        <img src="пожертвование.png" alt="Сделать пожертвование">
+                    </div>
+                    <div class="action-body">
+                        <h3>Сделать пожертвование</h3>
+                        <p>Ваш вклад помогает запускать новые экологические проекты, поддерживать образовательные программы и защищать уязвимые экосистемы.</p>
+                    </div>
+                    <a href="#" class="btn btn-secondary" onclick="alert('Благодарим за поддержку! Каждый рубль приближает нас к устойчивому будущему.')">Поддержать</a>
                 </div>
                 <div class="action-item">
-                    <img src="https://images.unsplash.com/photo-1518173833440-428669e4ce1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="Экологическое образование">
-                    <h3>Узнать больше</h3>
-                    <p>Расширьте свои знания в области экологии. Посещайте наши вебинары, читайте статьи и делитесь информацией с друзьями.</p>
-                    <a href="#" class="btn" onclick="alert('Скоро появится больше обучающих материалов!')">Подробнее</a>
+                    <div class="action-thumb">
+                        <img src="узнать больше.png" alt="Узнать больше">
+                    </div>
+                    <div class="action-body">
+                        <h3>Узнать больше</h3>
+                        <p>Следите за новостями, участвуйте в лекциях и мастер-классах и вдохновляйтесь историями людей, меняющих окружающий мир.</p>
+                    </div>
+                    <a href="#" class="btn btn-accent" onclick="alert('Мы поделимся анонсами мероприятий и полезными материалами!')">Подробнее</a>
                 </div>
             </div>
         </div>
