@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Проект - Береги Природу. Вместе Мы Можем Больше!</title>
+    <meta name="description" content="Узнайте об основных экологических проблемах, вдохновляющих историях и шагах, которые помогут вам поддержать природу и сделать образ жизни устойчивым.">
+    <title>ECO Pages: Главные экологические проблемы и решения</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -821,7 +824,7 @@
     <section id="hero" class="hero">
         <div class="content">
             <span class="hero-label">Проект «Береги природу»</span>
-            <h1>Вместе мы можем больше!</h1>
+            <h1>Главные экологические проблемы и что мы можем сделать</h1>
             <p>Наша планета — наш дом. Давайте вместе строить зелёное и устойчивое будущее для всех.</p>
             <a href="#actions" class="btn">Присоединиться к нам</a>
             <a href="#about" class="btn btn-secondary">Узнать больше</a>
@@ -847,7 +850,7 @@
             <div class="action-grid">
                 <div class="action-item">
                     <div class="action-thumb">
-                        <img src="волонтер.png" alt="Стать волонтёром">
+                        <img src="волонтер.png" alt="Иконка волонтёра проекта по защите природы" loading="lazy">
                     </div>
                     <div class="action-body">
                         <h3>Стать волонтёром</h3>
@@ -857,7 +860,7 @@
                 </div>
                 <div class="action-item">
                     <div class="action-thumb">
-                        <img src="пожертвование.png" alt="Сделать пожертвование">
+                        <img src="пожертвование.png" alt="Иконка благотворительного пожертвования на экологию" loading="lazy">
                     </div>
                     <div class="action-body">
                         <h3>Сделать пожертвование</h3>
@@ -867,7 +870,7 @@
                 </div>
                 <div class="action-item">
                     <div class="action-thumb">
-                        <img src="узнать больше.png" alt="Узнать больше">
+                        <img src="узнать больше.png" alt="Иконка поиска экологических решений" loading="lazy">
                     </div>
                     <div class="action-body">
                         <h3>Узнать больше</h3>
@@ -935,238 +938,6 @@
         </div>
     </footer>
 
-    
-    
-    
-    <script>
-        (function () {
-            const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            const links = Array.from(document.querySelectorAll("a[href^='#']"))
-                .filter(link => link.getAttribute('href') !== '#' && document.getElementById(link.getAttribute('href').slice(1)));
-
-            if (!links.length || prefersReducedMotion) {
-                return;
-            }
-
-            const header = document.querySelector('.header');
-            const getHeaderOffset = () => (header ? header.offsetHeight : 0);
-            let animationFrame = null;
-
-            const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
-
-            const animateScroll = (startY, destinationY, duration, onComplete) => {
-                const distance = destinationY - startY;
-                const startTime = performance.now();
-
-                const step = currentTime => {
-                    const elapsed = currentTime - startTime;
-                    const progress = Math.min(1, elapsed / duration);
-                    const eased = easeOutCubic(progress);
-                    window.scrollTo(0, startY + distance * eased);
-
-                    if (progress < 1) {
-                        animationFrame = requestAnimationFrame(step);
-                    } else if (typeof onComplete === "function") {
-                        onComplete();
-                    }
-                };
-
-                animationFrame = requestAnimationFrame(step);
-            };
-
-            links.forEach(link => {
-                link.addEventListener("click", event => {
-                    const targetId = link.getAttribute('href').slice(1);
-                    const target = document.getElementById(targetId);
-                    if (!target) {
-                        return;
-                    }
-
-                    event.preventDefault();
-
-                    if (animationFrame) {
-                        cancelAnimationFrame(animationFrame);
-                        animationFrame = null;
-                    }
-
-                    const startY = window.pageYOffset;
-                    const headerOffset = getHeaderOffset();
-                    const destinationY = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
-                    const travel = Math.abs(destinationY - startY);
-                    const duration = Math.min(1400, Math.max(450, travel * 0.6));
-
-                    animateScroll(startY, destinationY, duration, () => {
-                        target.setAttribute('tabindex', '-1');
-                        target.focus({ preventScroll: true });
-                        target.removeAttribute('tabindex');
-                    });
-                });
-            });
-        })();
-    </script>
-        <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const modalOverlay = document.getElementById('modal-overlay');
-            if (!modalOverlay) {
-                return;
-            }
-
-            const modalTitle = document.getElementById('modal-title');
-            const modalText = document.getElementById('modal-text');
-            const modalList = document.getElementById('modal-list');
-            const modalPrimaryButton = document.getElementById('modal-primary-button');
-            const modalSecondaryButton = document.getElementById('modal-secondary-button');
-            const modalIcon = modalOverlay.querySelector('.modal-icon');
-            const closeButton = modalOverlay.querySelector('.modal-close');
-            const triggers = document.querySelectorAll('.action-trigger');
-
-            if (!triggers.length) {
-                return;
-            }
-
-            let activeTrigger = null;
-
-            const modalContent = {
-                volunteer: {
-                    icon: '🌱',
-                    title: 'Как стать волонтёром',
-                    text: 'Мы ищем людей, которые готовы дарить своё время природе и городу. Вот как присоединиться к команде EcoFuture:',
-                    list: [
-                        'Заполните короткую анкету добровольца — расскажите о себе и интересах.',
-                        'Дождитесь письма или звонка координатора — мы подберём проект под ваши навыки.',
-                        'Пройдите вводный инструктаж и получите календарь ближайших мероприятий.'
-                    ],
-                    primary: { label: 'Заполнить анкету', href: '#contact' },
-                    secondary: { label: 'Посмотреть события', href: '#actions' }
-                },
-                donate: {
-                    icon: '💚',
-                    title: 'Как сделать пожертвование',
-                    text: 'Каждый рубль помогает запустить новый экологический проект. Поддержите нас удобным вам способом:',
-                    list: [
-                        'Переведите любую сумму на наш расчётный счёт — реквизиты появятся после нажатия.',
-                        'Подпишитесь на ежемесячную поддержку, чтобы мы планировали долгосрочные программы.',
-                        'Расскажите друзьям — вместе мы сможем ускорить зелёные изменения.'
-                    ],
-                    primary: { label: 'Перейти к пожертвованию', href: '#contact' },
-                    secondary: { label: 'Узнать о проектах', href: '#about' }
-                },
-                learn: {
-                    icon: '✨',
-                    title: 'Узнайте больше',
-                    text: 'Мы регулярно делимся новостями, историями и приглашениями на события. Оставайтесь на связи:',
-                    list: [
-                        'Подпишитесь на рассылку — раз в неделю отправляем подборку вдохновляющих материалов.',
-                        'Присоединяйтесь к Telegram-каналу, чтобы не пропустить анонсы мероприятий.',
-                        'Запишитесь на ближайший мастер-класс по устойчивому образу жизни.'
-                    ],
-                    primary: { label: 'Подписаться на новости', href: '#contact' },
-                    secondary: { label: 'Календарь событий', href: '#actions' }
-                }
-            };
-
-            const applyButtonState = (button, data) => {
-                if (data && data.label) {
-                    button.textContent = data.label;
-                    if (data.href) {
-                        button.dataset.href = data.href;
-                    } else {
-                        delete button.dataset.href;
-                    }
-                    button.hidden = false;
-                } else {
-                    delete button.dataset.href;
-                    button.hidden = true;
-                }
-            };
-
-            const openModal = type => {
-                const content = modalContent[type];
-                if (!content) {
-                    return;
-                }
-
-                modalTitle.textContent = content.title;
-                modalText.textContent = content.text;
-                modalIcon.textContent = content.icon || '';
-
-                modalList.innerHTML = '';
-                if (Array.isArray(content.list) && content.list.length) {
-                    content.list.forEach(item => {
-                        const li = document.createElement('li');
-                        li.textContent = item;
-                        modalList.appendChild(li);
-                    });
-                    modalList.hidden = false;
-                } else {
-                    modalList.hidden = true;
-                }
-
-                applyButtonState(modalPrimaryButton, content.primary);
-                applyButtonState(modalSecondaryButton, content.secondary);
-
-                modalOverlay.classList.add('is-visible');
-                modalOverlay.setAttribute('aria-hidden', 'false');
-                document.body.classList.add('modal-open');
-                closeButton.focus();
-            };
-
-            const closeModal = () => {
-                modalOverlay.classList.remove('is-visible');
-                modalOverlay.setAttribute('aria-hidden', 'true');
-                document.body.classList.remove('modal-open');
-                modalList.innerHTML = '';
-                if (activeTrigger) {
-                    activeTrigger.focus();
-                    activeTrigger = null;
-                }
-            };
-
-            triggers.forEach(trigger => {
-                trigger.addEventListener('click', event => {
-                    event.preventDefault();
-                    activeTrigger = trigger;
-                    openModal(trigger.dataset.modal);
-                });
-            });
-
-            closeButton.addEventListener('click', closeModal);
-
-            modalOverlay.addEventListener('click', event => {
-                if (event.target === modalOverlay) {
-                    closeModal();
-                }
-            });
-
-            document.addEventListener('keydown', event => {
-                if (event.key === 'Escape' && modalOverlay.classList.contains('is-visible')) {
-                    closeModal();
-                }
-            });
-
-            const handleActionButton = event => {
-                const href = event.currentTarget.dataset.href;
-                closeModal();
-                if (!href) {
-                    return;
-                }
-
-                if (href.startsWith('#')) {
-                    const target = document.querySelector(href);
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                } else {
-                    window.open(href, '_blank');
-                }
-            };
-
-            modalPrimaryButton.addEventListener('click', handleActionButton);
-            modalSecondaryButton.addEventListener('click', handleActionButton);
-        });
-    </script>
-
-
     <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
         <div class="modal" role="document">
             <button class="modal-close" type="button" aria-label="Закрыть окно">×</button>
@@ -1180,5 +951,6 @@
             </div>
         </div>
     </div>
+    <script src="main.js" defer></script>
 </body>
 </html>
