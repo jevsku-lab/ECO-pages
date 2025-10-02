@@ -1004,9 +1004,13 @@
             });
         })();
     </script>
-    <script>
-        (function () {
+        <script>
+        document.addEventListener('DOMContentLoaded', () => {
             const modalOverlay = document.getElementById('modal-overlay');
+            if (!modalOverlay) {
+                return;
+            }
+
             const modalTitle = document.getElementById('modal-title');
             const modalText = document.getElementById('modal-text');
             const modalList = document.getElementById('modal-list');
@@ -1015,6 +1019,11 @@
             const modalIcon = modalOverlay.querySelector('.modal-icon');
             const closeButton = modalOverlay.querySelector('.modal-close');
             const triggers = document.querySelectorAll('.action-trigger');
+
+            if (!triggers.length) {
+                return;
+            }
+
             let activeTrigger = null;
 
             const modalContent = {
@@ -1023,8 +1032,8 @@
                     title: 'Как стать волонтёром',
                     text: 'Мы ищем людей, которые готовы дарить своё время природе и городу. Вот как присоединиться к команде EcoFuture:',
                     list: [
-                        'Заполните короткую анкету добровольца – расскажите о себе и интересах.',
-                        'Дождитесь письма или звонка координатора – мы подберём проект по вашим навыкам.',
+                        'Заполните короткую анкету добровольца — расскажите о себе и интересах.',
+                        'Дождитесь письма или звонка координатора — мы подберём проект под ваши навыки.',
                         'Пройдите вводный инструктаж и получите календарь ближайших мероприятий.'
                     ],
                     primary: { label: 'Заполнить анкету', href: '#contact' },
@@ -1035,9 +1044,9 @@
                     title: 'Как сделать пожертвование',
                     text: 'Каждый рубль помогает запустить новый экологический проект. Поддержите нас удобным вам способом:',
                     list: [
-                        'Переведите любую сумму на наш расчётный счёт – реквизиты появятся после нажатия.',
-                        'Подпишитесь на ежемесячную поддержку, чтобы мы могли планировать долгосрочные программы.',
-                        'Расскажите друзьям – вместе мы сможем ускорить зелёные изменения.'
+                        'Переведите любую сумму на наш расчётный счёт — реквизиты появятся после нажатия.',
+                        'Подпишитесь на ежемесячную поддержку, чтобы мы планировали долгосрочные программы.',
+                        'Расскажите друзьям — вместе мы сможем ускорить зелёные изменения.'
                     ],
                     primary: { label: 'Перейти к пожертвованию', href: '#contact' },
                     secondary: { label: 'Узнать о проектах', href: '#about' }
@@ -1047,12 +1056,27 @@
                     title: 'Узнайте больше',
                     text: 'Мы регулярно делимся новостями, историями и приглашениями на события. Оставайтесь на связи:',
                     list: [
-                        'Подпишитесь на рассылку – раз в неделю мы отправляем подборку вдохновляющих материалов.',
-                        'Присоединяйтесь к Telegram‑каналу, чтобы не пропустить анонсы мероприятий.',
+                        'Подпишитесь на рассылку — раз в неделю отправляем подборку вдохновляющих материалов.',
+                        'Присоединяйтесь к Telegram-каналу, чтобы не пропустить анонсы мероприятий.',
                         'Запишитесь на ближайший мастер-класс по устойчивому образу жизни.'
                     ],
                     primary: { label: 'Подписаться на новости', href: '#contact' },
                     secondary: { label: 'Календарь событий', href: '#actions' }
+                }
+            };
+
+            const applyButtonState = (button, data) => {
+                if (data && data.label) {
+                    button.textContent = data.label;
+                    if (data.href) {
+                        button.dataset.href = data.href;
+                    } else {
+                        delete button.dataset.href;
+                    }
+                    button.hidden = false;
+                } else {
+                    delete button.dataset.href;
+                    button.hidden = true;
                 }
             };
 
@@ -1064,41 +1088,37 @@
 
                 modalTitle.textContent = content.title;
                 modalText.textContent = content.text;
-                modalIcon.textContent = content.icon;
+                modalIcon.textContent = content.icon || '';
 
                 modalList.innerHTML = '';
-                content.list.forEach(item => {
-                    const li = document.createElement('li');
-                    li.textContent = item;
-                    modalList.appendChild(li);
-                });
-
-                const applyButtonState = (button, data) => {
-                    if (data && data.label) {
-                        button.textContent = data.label;
-                        button.dataset.href = data.href || '';
-                        button.hidden = false;
-                    } else {
-                        button.hidden = true;
-                    }
-                };
+                if (Array.isArray(content.list) && content.list.length) {
+                    content.list.forEach(item => {
+                        const li = document.createElement('li');
+                        li.textContent = item;
+                        modalList.appendChild(li);
+                    });
+                    modalList.hidden = false;
+                } else {
+                    modalList.hidden = true;
+                }
 
                 applyButtonState(modalPrimaryButton, content.primary);
                 applyButtonState(modalSecondaryButton, content.secondary);
 
                 modalOverlay.classList.add('is-visible');
-                document.body.classList.add('modal-open');
                 modalOverlay.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('modal-open');
                 closeButton.focus();
             };
 
             const closeModal = () => {
                 modalOverlay.classList.remove('is-visible');
-                document.body.classList.remove('modal-open');
                 modalOverlay.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('modal-open');
                 modalList.innerHTML = '';
                 if (activeTrigger) {
                     activeTrigger.focus();
+                    activeTrigger = null;
                 }
             };
 
@@ -1106,8 +1126,7 @@
                 trigger.addEventListener('click', event => {
                     event.preventDefault();
                     activeTrigger = trigger;
-                    const type = trigger.dataset.modal;
-                    openModal(type);
+                    openModal(trigger.dataset.modal);
                 });
             });
 
@@ -1127,24 +1146,24 @@
 
             const handleActionButton = event => {
                 const href = event.currentTarget.dataset.href;
-                if (href) {
-                    closeModal();
-                    if (href.startsWith('#')) {
-                        const target = document.querySelector(href);
-                        if (target) {
-                            target.scrollIntoView({ behavior: 'smooth' });
-                        }
-                    } else {
-                        window.open(href, '_blank');
+                closeModal();
+                if (!href) {
+                    return;
+                }
+
+                if (href.startsWith('#')) {
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }
                 } else {
-                    closeModal();
+                    window.open(href, '_blank');
                 }
             };
 
             modalPrimaryButton.addEventListener('click', handleActionButton);
             modalSecondaryButton.addEventListener('click', handleActionButton);
-        })();
+        });
     </script>
 
 
