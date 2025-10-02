@@ -62,164 +62,216 @@
         });
     });
     })();
-
-    document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
     const modalOverlay = document.getElementById('modal-overlay');
-    if (!modalOverlay) {
-        return;
-    }
 
-    const modalTitle = document.getElementById('modal-title');
-    const modalText = document.getElementById('modal-text');
-    const modalList = document.getElementById('modal-list');
-    const modalPrimaryButton = document.getElementById('modal-primary-button');
-    const modalSecondaryButton = document.getElementById('modal-secondary-button');
-    const modalIcon = modalOverlay.querySelector('.modal-icon');
-    const closeButton = modalOverlay.querySelector('.modal-close');
-    const triggers = document.querySelectorAll('.action-trigger');
+    if (modalOverlay) {
+        const modalTitle = document.getElementById('modal-title');
+        const modalText = document.getElementById('modal-text');
+        const modalList = document.getElementById('modal-list');
+        const modalPrimaryButton = document.getElementById('modal-primary-button');
+        const modalSecondaryButton = document.getElementById('modal-secondary-button');
+        const modalIcon = modalOverlay.querySelector('.modal-icon');
+        const closeButton = modalOverlay.querySelector('.modal-close');
+        const triggers = document.querySelectorAll('.action-trigger');
 
-    if (!triggers.length) {
-        return;
-    }
+        if (triggers.length) {
+            let activeTrigger = null;
 
-    let activeTrigger = null;
+            const modalContent = {
+                    volunteer: {
+                        icon: '🌱',
+                        title: 'Как стать волонтёром',
+                        text: 'Мы ищем людей, которые готовы дарить своё время природе и городу. Вот как присоединиться к команде EcoFuture:',
+                        list: [
+                            'Заполните короткую анкету добровольца — расскажите о себе и интересах.',
+                            'Дождитесь письма или звонка координатора — мы подберём проект под ваши навыки.',
+                            'Пройдите вводный инструктаж и получите календарь ближайших мероприятий.'
+                        ],
+                        primary: { label: 'Заполнить анкету', href: '#contact' },
+                        secondary: { label: 'Посмотреть события', href: '#actions' }
+                    },
+                    donate: {
+                        icon: '💚',
+                        title: 'Как сделать пожертвование',
+                        text: 'Каждый рубль помогает запустить новый экологический проект. Поддержите нас удобным вам способом:',
+                        list: [
+                            'Переведите любую сумму на наш расчётный счёт — реквизиты появятся после нажатия.',
+                            'Подпишитесь на ежемесячную поддержку, чтобы мы планировали долгосрочные программы.',
+                            'Расскажите друзьям — вместе мы сможем ускорить зелёные изменения.'
+                        ],
+                        primary: { label: 'Перейти к пожертвованию', href: '#contact' },
+                        secondary: { label: 'Узнать о проектах', href: '#about' }
+                    },
+                    learn: {
+                        icon: '✨',
+                        title: 'Узнайте больше',
+                        text: 'Мы регулярно делимся новостями, историями и приглашениями на события. Оставайтесь на связи:',
+                        list: [
+                            'Подпишитесь на рассылку — раз в неделю отправляем подборку вдохновляющих материалов.',
+                            'Присоединяйтесь к Telegram-каналу, чтобы не пропустить анонсы мероприятий.',
+                            'Запишитесь на ближайший мастер-класс по устойчивому образу жизни.'
+                        ],
+                        primary: { label: 'Подписаться на новости', href: '#contact' },
+                        secondary: { label: 'Календарь событий', href: '#actions' }
+                    }
+                };
 
-    const modalContent = {
-        volunteer: {
-            icon: '🌱',
-            title: 'Как стать волонтёром',
-            text: 'Мы ищем людей, которые готовы дарить своё время природе и городу. Вот как присоединиться к команде EcoFuture:',
-            list: [
-                'Заполните короткую анкету добровольца — расскажите о себе и интересах.',
-                'Дождитесь письма или звонка координатора — мы подберём проект под ваши навыки.',
-                'Пройдите вводный инструктаж и получите календарь ближайших мероприятий.'
-            ],
-            primary: { label: 'Заполнить анкету', href: '#contact' },
-            secondary: { label: 'Посмотреть события', href: '#actions' }
-        },
-        donate: {
-            icon: '💚',
-            title: 'Как сделать пожертвование',
-            text: 'Каждый рубль помогает запустить новый экологический проект. Поддержите нас удобным вам способом:',
-            list: [
-                'Переведите любую сумму на наш расчётный счёт — реквизиты появятся после нажатия.',
-                'Подпишитесь на ежемесячную поддержку, чтобы мы планировали долгосрочные программы.',
-                'Расскажите друзьям — вместе мы сможем ускорить зелёные изменения.'
-            ],
-            primary: { label: 'Перейти к пожертвованию', href: '#contact' },
-            secondary: { label: 'Узнать о проектах', href: '#about' }
-        },
-        learn: {
-            icon: '✨',
-            title: 'Узнайте больше',
-            text: 'Мы регулярно делимся новостями, историями и приглашениями на события. Оставайтесь на связи:',
-            list: [
-                'Подпишитесь на рассылку — раз в неделю отправляем подборку вдохновляющих материалов.',
-                'Присоединяйтесь к Telegram-каналу, чтобы не пропустить анонсы мероприятий.',
-                'Запишитесь на ближайший мастер-класс по устойчивому образу жизни.'
-            ],
-            primary: { label: 'Подписаться на новости', href: '#contact' },
-            secondary: { label: 'Календарь событий', href: '#actions' }
+    
+
+            const applyButtonState = (button, data) => {
+                    if (data && data.label) {
+                        button.textContent = data.label;
+                        if (data.href) {
+                            button.dataset.href = data.href;
+                        } else {
+                            delete button.dataset.href;
+                        }
+                        button.hidden = false;
+                    } else {
+                        delete button.dataset.href;
+                        button.hidden = true;
+                    }
+                };
+
+                const openModal = type => {
+                    const content = modalContent[type];
+                    if (!content) {
+                        return;
+                    }
+
+                    modalTitle.textContent = content.title;
+                    modalText.textContent = content.text;
+                    modalIcon.textContent = content.icon || '';
+
+                    modalList.innerHTML = '';
+                    if (Array.isArray(content.list) && content.list.length) {
+                        content.list.forEach(item => {
+                            const li = document.createElement('li');
+                            li.textContent = item;
+                            modalList.appendChild(li);
+                        });
+                        modalList.hidden = false;
+                    } else {
+                        modalList.hidden = true;
+                    }
+
+                    applyButtonState(modalPrimaryButton, content.primary);
+                    applyButtonState(modalSecondaryButton, content.secondary);
+
+                    modalOverlay.classList.add('is-visible');
+                    modalOverlay.setAttribute('aria-hidden', 'false');
+                    document.body.classList.add('modal-open');
+                    closeButton.focus();
+                };
+
+                const closeModal = () => {
+                    modalOverlay.classList.remove('is-visible');
+                    modalOverlay.setAttribute('aria-hidden', 'true');
+                    document.body.classList.remove('modal-open');
+                    modalList.innerHTML = '';
+                    if (activeTrigger) {
+                        activeTrigger.focus();
+                        activeTrigger = null;
+                    }
+                };
+
+                triggers.forEach(trigger => {
+                    trigger.addEventListener('click', event => {
+                        event.preventDefault();
+                        activeTrigger = trigger;
+                        openModal(trigger.dataset.modal);
+                    });
+                });
+
+                closeButton.addEventListener('click', closeModal);
+
+                modalOverlay.addEventListener('click', event => {
+                    if (event.target === modalOverlay) {
+                        closeModal();
+                    }
+                });
+
+                document.addEventListener('keydown', event => {
+                    if (event.key === 'Escape' && modalOverlay.classList.contains('is-visible')) {
+                        closeModal();
+                    }
+                });
+
+                const handleActionButton = event => {
+                    const href = event.currentTarget.dataset.href;
+                    closeModal();
+                    if (!href) {
+                        return;
+                    }
+
+                    if (href.startsWith('#')) {
+                        const target = document.querySelector(href);
+                        if (target) {
+                            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    } else {
+                        window.open(href, '_blank');
+                    }
+                };
+
+                modalPrimaryButton.addEventListener('click', handleActionButton);
+            modalSecondaryButton.addEventListener('click', handleActionButton);
         }
-    };
+    }
 
-    const applyButtonState = (button, data) => {
-        if (data && data.label) {
-            button.textContent = data.label;
-            if (data.href) {
-                button.dataset.href = data.href;
-            } else {
-                delete button.dataset.href;
+    const projectLightbox = document.getElementById('project-lightbox');
+    const projectTriggers = document.querySelectorAll('.project-trigger');
+
+    if (projectLightbox && projectTriggers.length) {
+        const projectImage = document.getElementById('project-lightbox-image');
+        const projectCaption = document.getElementById('project-lightbox-caption');
+        const projectClose = projectLightbox.querySelector('.project-lightbox__close');
+        let activeProjectTrigger = null;
+
+        const openProjectModal = trigger => {
+            projectImage.src = trigger.dataset.src || '';
+            projectImage.alt = trigger.dataset.alt || '';
+            projectCaption.textContent = trigger.dataset.caption || '';
+            projectLightbox.classList.add('is-visible');
+            projectLightbox.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('modal-open');
+            projectClose.focus();
+        };
+
+        const closeProjectModal = () => {
+            projectLightbox.classList.remove('is-visible');
+            projectLightbox.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('modal-open');
+            projectImage.removeAttribute('src');
+            projectImage.alt = '';
+            projectCaption.textContent = '';
+            if (activeProjectTrigger) {
+                activeProjectTrigger.focus();
+                activeProjectTrigger = null;
             }
-            button.hidden = false;
-        } else {
-            delete button.dataset.href;
-            button.hidden = true;
-        }
-    };
+        };
 
-    const openModal = type => {
-        const content = modalContent[type];
-        if (!content) {
-            return;
-        }
-
-        modalTitle.textContent = content.title;
-        modalText.textContent = content.text;
-        modalIcon.textContent = content.icon || '';
-
-        modalList.innerHTML = '';
-        if (Array.isArray(content.list) && content.list.length) {
-            content.list.forEach(item => {
-                const li = document.createElement('li');
-                li.textContent = item;
-                modalList.appendChild(li);
+        projectTriggers.forEach(trigger => {
+            trigger.addEventListener('click', event => {
+                event.preventDefault();
+                activeProjectTrigger = trigger;
+                openProjectModal(trigger);
             });
-            modalList.hidden = false;
-        } else {
-            modalList.hidden = true;
-        }
-
-        applyButtonState(modalPrimaryButton, content.primary);
-        applyButtonState(modalSecondaryButton, content.secondary);
-
-        modalOverlay.classList.add('is-visible');
-        modalOverlay.setAttribute('aria-hidden', 'false');
-        document.body.classList.add('modal-open');
-        closeButton.focus();
-    };
-
-    const closeModal = () => {
-        modalOverlay.classList.remove('is-visible');
-        modalOverlay.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('modal-open');
-        modalList.innerHTML = '';
-        if (activeTrigger) {
-            activeTrigger.focus();
-            activeTrigger = null;
-        }
-    };
-
-    triggers.forEach(trigger => {
-        trigger.addEventListener('click', event => {
-            event.preventDefault();
-            activeTrigger = trigger;
-            openModal(trigger.dataset.modal);
         });
-    });
 
-    closeButton.addEventListener('click', closeModal);
+        projectClose.addEventListener('click', closeProjectModal);
 
-    modalOverlay.addEventListener('click', event => {
-        if (event.target === modalOverlay) {
-            closeModal();
-        }
-    });
-
-    document.addEventListener('keydown', event => {
-        if (event.key === 'Escape' && modalOverlay.classList.contains('is-visible')) {
-            closeModal();
-        }
-    });
-
-    const handleActionButton = event => {
-        const href = event.currentTarget.dataset.href;
-        closeModal();
-        if (!href) {
-            return;
-        }
-
-        if (href.startsWith('#')) {
-            const target = document.querySelector(href);
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        projectLightbox.addEventListener('click', event => {
+            if (event.target === projectLightbox) {
+                closeProjectModal();
             }
-        } else {
-            window.open(href, '_blank');
-        }
-    };
+        });
 
-    modalPrimaryButton.addEventListener('click', handleActionButton);
-    modalSecondaryButton.addEventListener('click', handleActionButton);
-    });
-
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && projectLightbox.classList.contains('is-visible')) {
+                closeProjectModal();
+            }
+        });
+    }
+});
