@@ -810,5 +810,74 @@
         </div>
     </footer>
 
+    
+    
+    
+    <script>
+        (function () {
+            const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const links = Array.from(document.querySelectorAll("a[href^='#']"))
+                .filter(link => link.getAttribute('href') !== '#' && document.getElementById(link.getAttribute('href').slice(1)));
+
+            if (!links.length || prefersReducedMotion) {
+                return;
+            }
+
+            const header = document.querySelector('.header');
+            const getHeaderOffset = () => (header ? header.offsetHeight : 0);
+            let animationFrame = null;
+
+            const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+
+            const animateScroll = (startY, destinationY, duration, onComplete) => {
+                const distance = destinationY - startY;
+                const startTime = performance.now();
+
+                const step = currentTime => {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(1, elapsed / duration);
+                    const eased = easeOutCubic(progress);
+                    window.scrollTo(0, startY + distance * eased);
+
+                    if (progress < 1) {
+                        animationFrame = requestAnimationFrame(step);
+                    } else if (typeof onComplete === "function") {
+                        onComplete();
+                    }
+                };
+
+                animationFrame = requestAnimationFrame(step);
+            };
+
+            links.forEach(link => {
+                link.addEventListener("click", event => {
+                    const targetId = link.getAttribute('href').slice(1);
+                    const target = document.getElementById(targetId);
+                    if (!target) {
+                        return;
+                    }
+
+                    event.preventDefault();
+
+                    if (animationFrame) {
+                        cancelAnimationFrame(animationFrame);
+                        animationFrame = null;
+                    }
+
+                    const startY = window.pageYOffset;
+                    const headerOffset = getHeaderOffset();
+                    const destinationY = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+                    const travel = Math.abs(destinationY - startY);
+                    const duration = Math.min(1400, Math.max(450, travel * 0.6));
+
+                    animateScroll(startY, destinationY, duration, () => {
+                        target.setAttribute('tabindex', '-1');
+                        target.focus({ preventScroll: true });
+                        target.removeAttribute('tabindex');
+                    });
+                });
+            });
+        })();
+    </script>
 </body>
 </html>
